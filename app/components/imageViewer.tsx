@@ -1,5 +1,5 @@
-import { ImageSourcePropType, StyleSheet } from "react-native";
 import { Image } from "expo-image";
+import { ImageSourcePropType, StyleSheet } from "react-native";
 
 type Props = {
     imgSource: ImageSourcePropType;
@@ -11,7 +11,8 @@ export default function ImageViewer({ imgSource }: Props) {
 const styles = StyleSheet.create({
     image: {
         width: 350,
-        height: 250,
+        height: 200,
         borderRadius: 15,
+        marginBottom: 25,
     }
 })
