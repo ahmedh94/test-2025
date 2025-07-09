@@ -2,7 +2,7 @@
 //import { Image } from "expo-image";
 import * as ImagePicker from 'expo-image-picker';
 import { useState } from 'react';
-import { StyleSheet, Text, View } from "react-native";
+import { ScrollView, StyleSheet, Text, View } from "react-native";
 import ImageProfile from '../components/imageProfile';
 
 
@@ -31,7 +31,14 @@ export default function Index() {
       <View style={styles.imageContainer}>
           <ImageProfile imgSource={selectedImage || PlaceholderImage} />
           <Text style={styles.text}> Ahmed Hasan</Text>
-          <Text style={styles.text}> 25 \ 06 \ 1994 </Text>
+        <Text style={styles.text}> 25 \ 06 \ 1994 </Text>
+        <ScrollView>
+          <Text style={styles.pragraph}>Ahmed is a person trying to develop himself and his skills. That is why he studied website development and joined Open Learning to study learning technology and study some courses on writing clean code, databases and programming in Python. Within my studies at the College of Education Technology and he studied operating systems and types of Internet networks, he can use wow.js, font Awesome, and Google Fonts.
+   He hopes to be an employee in one of the companies and hopes that he will meet your expectations.
+Ahmed is a person trying to develop himself and his skills. That is why he studied website development and joined Open Learning to study learning technology and study some courses on writing clean code, databases and programming in Python. Within my studies at the College of Education Technology and he studied operating systems and types of Internet networks, he can use wow.js, font Awesome, and Google Fonts.
+            He hopes to be an employee in one of the companies and hopes that he will meet your expectations.
+          </Text>
+            </ScrollView>
         </View>
     </View>
   );
@@ -52,4 +59,10 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
   },
+  pragraph: {
+    padding: 15,
+    fontSize: 16,
+    color: '#fff',
+    lineHeight: 25,
+  }
 })
