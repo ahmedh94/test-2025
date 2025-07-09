@@ -3,7 +3,7 @@
 import Button from '@/app/components/Button';
 import * as ImagePicker from 'expo-image-picker';
 import { useState } from 'react';
-import { StyleSheet, View } from "react-native";
+import { ScrollView, StyleSheet, View } from "react-native";
 import ImageViewer from "../components/imageViewer";
 
 
@@ -27,13 +27,18 @@ export default function Index() {
     }
   };
   return (
+    
     <View style={styles.container}>
+      <ScrollView style={styles.scrollview}>
       <View style={styles.imageContainer}>
         <ImageViewer imgSource={ selectedImage || PlaceholderImage} />
         <ImageViewer imgSource={ selectedImage || PlaceholderImage} />
-      </View>
+        <ImageViewer imgSource={ selectedImage || PlaceholderImage} />
+        <ImageViewer imgSource={ selectedImage || PlaceholderImage} />
+        </View>
+        </ScrollView>
       
-      <View style={styles.footerContainer}>
+      <View style={[styles.footerContainer, {borderRadius: 10}]}>
         <Button onPress={pickImageAsync} theme="primary" label="choose a photo" />
         <Button label="use this photo" />
       </View>
@@ -46,6 +51,9 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#25292e',
     alignItems: "center",
+  },
+  scrollview: {
+    height: 75,
   },
   text: {
     color: '#fff',
@@ -61,5 +69,9 @@ const styles = StyleSheet.create({
   footerContainer: {
     flex: 1 / 3,
     alignItems: 'center',
+    marginTop: 25,
+    paddingTop: 20,
+    marginBottom: 10,
+    backgroundColor:  '#0aa',
   }
 })

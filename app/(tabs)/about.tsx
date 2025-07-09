@@ -1,4 +1,4 @@
-import { Text, View, StyleSheet } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 
 export default function AboutScreen() {
   return (
@@ -17,5 +17,7 @@ const styles = StyleSheet.create({
   },
   text: {
     color: '#fff',
+    fontWeight: 500,
+    fontSize: 24,
   }
 })
