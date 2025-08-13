@@ -1,9 +1,13 @@
 //import { Link } from "expo-router";
 //import { Image } from "expo-image";
 import Button from '@/app/components/Button';
+import domtoimage from 'dom-to-image';
 import * as ImagePicker from 'expo-image-picker';
-import { useState } from 'react';
-import { ImageSourcePropType, StyleSheet, View } from "react-native";
+import * as MediaLibrary from "expo-media-library";
+import { useRef, useState } from 'react';
+import { ImageSourcePropType, Platform, StyleSheet, View } from "react-native";
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { captureRef } from 'react-native-view-shot';
 import CircleButton from '../components/CircleButton';
 import EmojiList from '../components/Emojilist';
 import EmojiPicker from '../components/EmojiPicker';
@@ -20,6 +24,12 @@ export default function Index() {
   const [showAppOptions, setShowAppOptions] = useState<boolean>(false);
   const [isModalVisible, setIsModelVisible] = useState<boolean>(false);
   const [pickedEmoji, setPickedEmoji] = useState<ImageSourcePropType | undefined>(undefined);
+  const [status, requestPermission] = MediaLibrary.usePermissions();
+  const imageRef = useRef<View>(null);
+
+  if (status === null) {
+    requestPermission();
+  }
 
   const pickImageAsync = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -46,15 +56,45 @@ export default function Index() {
     setIsModelVisible(false);
   };
   const onSaveImageAsync = async () => {
-    //
-  }
-  return (
-    
-    <View style={styles.container}>
+    if (Platform.OS !== 'web') { 
+      try {
+        const localUri = await captureRef(imageRef, {
+          height: 440,
+          quality: 1,
+        });
+        await MediaLibrary.saveToLibraryAsync(localUri);
+        if (localUri) {
+          alert('Saved!');
+        }
+      } catch (e) {
+        console.log(e);
+    }
+    } else {
+      try {
+        const dataUrl = await domtoimage.toJpeg(imageRef.current, {
+          quality: 0.95,
+          width: 320,
+          height: 440,
+        });
+
+        let link = document.createElement('a');
+        link.download = 'sticker-smach.jpeg';
+        link.href = dataUrl;
+        link.click();
+      } catch (e) {
+        console.log(e);
+      }
+    }
+      
+  };
+  return (    
+    <GestureHandlerRootView style={styles.container}>
       
       <View style={styles.imageContainer}>
+        <View ref={imageRef} collapsable={false}>
         <ImageViewer imgSource={selectedImage || PlaceholderImage} />
-        {pickedEmoji && <EmojiSticker imageSize={40} stickerSource={pickedEmoji}/>}
+          {pickedEmoji && <EmojiSticker imageSize={40} stickerSource={pickedEmoji} />}
+          </View>
         </View>
       {showAppOptions ? (
         <View style={styles.optionsContainer}>
@@ -74,7 +114,7 @@ export default function Index() {
         <EmojiList onSelect={setPickedEmoji} onCloseModal={onModalClose} />
       </EmojiPicker>
       
-    </View>
+      </GestureHandlerRootView>
   );
 }
 
@@ -104,7 +144,6 @@ const styles = StyleSheet.create({
     marginTop: 25,
     paddingTop: 20,
     marginBottom: 10,
-    backgroundColor:  '#0aa',
   },
       optionsContainer: {
         position: 'absolute',
